@@ -12,7 +12,7 @@ const adminRoutes = require("./adminRoutes");
 const productRoutes = require("./productRoutes");
 const saleRoutes = require("./saleRoutes");
 const reportRoutes = require("./reportRoutes");
-const auth = require("../authMiddleware");
+const auth = require("./authMiddleware");
 
 connectDB();
 
@@ -20,9 +20,9 @@ app.get("/", (req, res) => {
   res.json({ message: "API working" });
 });
 
-app.use("/admin", adminRoutes);
-app.use("/products", productRoutes);
-app.use("/sales", auth, saleRoutes);
-app.use("/reports", auth, reportRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/sales", auth, saleRoutes);
+app.use("/api/reports", auth, reportRoutes);
 
 module.exports = serverless(app);

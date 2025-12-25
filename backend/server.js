@@ -10,7 +10,7 @@ const productRoutes = require("./api/productRoutes");
 const saleRoutes = require("./api/saleRoutes");
 const reportRoutes = require("./api/reportRoutes");
 
-const auth = require("./authMiddleware");
+const auth = require("./api/authMiddleware");
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
