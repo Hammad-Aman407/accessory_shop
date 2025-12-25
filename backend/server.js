@@ -20,10 +20,10 @@ app.use(bodyParser.json());
 
 connectDB();
 
-app.use("/admin", adminRoutes);
-app.use("/products", auth, productRoutes);
-app.use("/sales", auth, saleRoutes);
-app.use("/reports", auth, reportRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/products", auth, productRoutes);
+app.use("/api/sales", auth, saleRoutes);
+app.use("/api/reports", auth, reportRoutes);
 
 const PORT = process.env.PORT || 5000;
 
