@@ -1,0 +1,67 @@
+.hero-section {
+    position: relative;
+    background-image: url('../assets/hero.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+}
+
+.hero-section::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 420px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+
+    color: #f1f1f1;
+}
+
+.glass-card h3 {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.glass-card .form-control {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+}
+
+.glass-card .form-control::placeholder {
+    color: #666;
+}
+
+.login-btn {
+    background: #ffb703;
+    color: #1b1b1b;
+    transition: 0.3s ease;
+}
+
+.login-btn:hover {
+    background: #ffd166;
+}
+
+.eye-icon{
+    cursor: pointer;
+    color: black;
+}
