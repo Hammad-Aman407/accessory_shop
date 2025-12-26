@@ -5,13 +5,22 @@ const cors = require("cors");
 
 const app = express();
 
-const corsOrigin = process.env.BASE_URL
+const allowedOrigins = process.env.BASE_URL
 
 const corsOptions = {
-  origin: corsOrigin,
-  methods:["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"],
-  credentials:true
-}
+  origin: function (origin, callback) {
+  
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
+};
 
 app.use(cors(corsOptions));
 app.use(express.json());
