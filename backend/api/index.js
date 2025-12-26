@@ -5,24 +5,7 @@ const cors = require("cors");
 
 const app = express();
 
-const allowedOrigins = process.env.BASE_URL
-
-const corsOptions = {
-  origin: function (origin, callback) {
-  
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-
-    return callback(new Error("Not allowed by CORS"));
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"]
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 const adminRoutes = require("./adminRoutes");
@@ -38,7 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/admin", adminRoutes);
-app.use("/api/products", productRoutes);
+app.use("/api/products", auth, productRoutes);
 app.use("/api/sales", auth, saleRoutes);
 app.use("/api/reports", auth, reportRoutes);
 
