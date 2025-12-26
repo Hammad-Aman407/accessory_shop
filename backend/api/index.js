@@ -1,10 +1,10 @@
-require("dotenv").config(); 
+require("dotenv").config();
 const express = require("express");
-const serverless = require("serverless-http");
 const connectDB = require("../db");
 const cors = require("cors");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
@@ -25,4 +25,4 @@ app.use("/api/products", productRoutes);
 app.use("/api/sales", auth, saleRoutes);
 app.use("/api/reports", auth, reportRoutes);
 
-module.exports = serverless(app);
+module.exports = app; 
