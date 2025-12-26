@@ -5,7 +5,15 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+const corsOrigin = process.env.BASE_URL
+
+const corsOptions = {
+  origin: corsOrigin,
+  methods:["GET", "POST", "PUT", "PATCH", "OPTIONS", "DELETE"],
+  credentials:true
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const adminRoutes = require("./adminRoutes");
