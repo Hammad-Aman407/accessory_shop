@@ -40,7 +40,7 @@ const HomePage = () => {
             localStorage.setItem("token", token);
 
             toast.success("Login successful!");
-            navigate("/admin");
+            navigate("/admin", { replace: true });
             reset();
 
         } catch (error) {
@@ -72,10 +72,6 @@ const HomePage = () => {
                                         placeholder="Enter Email"
                                         {...register("email", {
                                             required: "Email is required",
-                                            pattern: {
-                                                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                                message: "Invalid email format",
-                                            },
                                         })}
                                     />
                                     {errors.email && (
@@ -92,14 +88,6 @@ const HomePage = () => {
                                         placeholder="Enter Password"
                                         {...register("password", {
                                             required: "Password is required",
-                                            minLength: {
-                                                value: 8,
-                                                message: "Password must be at least 8 characters",
-                                            },
-                                            maxLength: {
-                                                value: 18,
-                                                message: "Password must not exceed 15 characters",
-                                            },
                                         })}
                                     />
                                     <i
