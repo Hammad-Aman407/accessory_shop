@@ -61,7 +61,7 @@ const MonthlyReports = () => {
                 <div className="row">
                     <div className="col-md-4 mb-2">
                         <div className="p-3 bg-light border rounded">
-                            <h5>Total Sales Amount</h5>
+                            <h5>Total Sales</h5>
                             <p className="fs-5">{total.totalSalesAmount}</p>
                         </div>
                     </div>

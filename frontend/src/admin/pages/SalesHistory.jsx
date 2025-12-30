@@ -73,7 +73,7 @@ const SalesHistory = () => {
     return (
         <div className="container mt-5 mb-5 mx-lg-5 mx-2">
             <h3>Sales History</h3>
-            <p>View all recorded sales with product details and timestamps.</p>
+            <p>View all recorded sales with product details and time.</p>
 
             <div className="row mb-3">
                 <div className="col-lg-4 col-12 mb-2">

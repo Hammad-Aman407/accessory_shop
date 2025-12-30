@@ -51,7 +51,7 @@ router.post("/add", async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const sales = await Sale.find();
+    const sales = await Sale.find().sort({ createdAt: -1 });
     res.json(sales);
   } catch (error) {
     res.status(500).json({ message: "Error fetching sales" });

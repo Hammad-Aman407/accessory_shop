@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import {
     CDBSidebar,
     CDBSidebarContent,
@@ -90,7 +90,7 @@ const SideBar = () => {
 
             </CDBSidebar>
 
-            <div style={{ width: "100%", overflowY: "auto", overflowX: "auto" }}>
+            <div style={{ width: "100%", overflowY: "auto", overflowX: "auto"}}>
                 <Outlet />
             </div>
         </div>

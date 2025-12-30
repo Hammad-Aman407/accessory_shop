@@ -172,7 +172,11 @@ const ViewProducts = () => {
                 ) : (
                     filteredProducts.map((product) => (
                         <div className="col-lg-3 col-12 mb-3" key={product._id}>
-                            <div className="bg-light px-3 py-3 rounded">
+                            <div className="px-3 py-3 rounded" style={{
+                                backgroundColor: "#F5F7FA",
+                                border: "1px solid #E5E7EB",
+                                boxShadow: "0 4px 10px rgba(0,0,0,0.05)"
+                            }}>
                                 <div className="d-flex justify-content-between align-items-center mb-2">
                                     <h6 className="mb-1">{product.name}</h6>
                                     <p className="bg-dark text-white px-1 rounded mb-1" style={{ fontSize: "0.75rem", fontWeight: "700" }}>

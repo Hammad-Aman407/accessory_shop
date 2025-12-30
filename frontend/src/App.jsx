@@ -10,6 +10,7 @@ import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './index.css';
 
 function App() {
   return (

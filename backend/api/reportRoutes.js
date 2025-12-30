@@ -13,7 +13,11 @@ router.get("/daily", async (req, res) => {
             {
                 $group: {
                     _id: null,
-                    totalSalesAmount: { $sum: { $multiply: ["$quantitySold", "$costPrice"] } },
+                    totalSalesAmount: {
+                        $sum: {
+                            $multiply: ["$sellingPrice", "$quantitySold"]
+                        }
+                    },
                     totalProfit: { $sum: "$profit" }
                 }
             }
@@ -34,12 +38,18 @@ router.get("/monthly", async (req, res) => {
             { $match: { saleDate: { $gte: firstDay } } },
             {
                 $group: {
-                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$saleDate" } },
-                    dailySalesAmount: { $sum: { $multiply: ["$quantitySold", "$costPrice"] } },
+                    _id: {
+                        $dateToString: { format: "%Y-%m-%d", date: "$saleDate" }
+                    },
+                    dailySalesAmount: {
+                        $sum: {
+                            $multiply: ["$sellingPrice", "$quantitySold"]
+                        }
+                    },
                     dailyProfit: { $sum: "$profit" }
                 }
             },
-            { $sort: { "_id": 1 } }
+            { $sort: { _id: 1 } }
         ]);
 
         const totalReport = await Sale.aggregate([
@@ -47,7 +57,11 @@ router.get("/monthly", async (req, res) => {
             {
                 $group: {
                     _id: null,
-                    totalSalesAmount: { $sum: { $multiply: ["$quantitySold", "$costPrice"] } },
+                    totalSalesAmount: {
+                        $sum: {
+                            $multiply: ["$sellingPrice", "$quantitySold"]
+                        }
+                    },
                     totalProfit: { $sum: "$profit" }
                 }
             }
@@ -57,7 +71,6 @@ router.get("/monthly", async (req, res) => {
             daily: dailyReport,
             total: totalReport[0] || { totalSalesAmount: 0, totalProfit: 0 }
         });
-
     } catch (error) {
         res.status(500).json({ message: "Error fetching monthly report" });
     }
@@ -68,7 +81,7 @@ cron.schedule("0 0 1 * *", async () => {
         await Sale.deleteMany({});
         console.log("Monthly sales reset automatically");
     } catch (error) {
-        console.error("Error resetting monthly sales:" );
+        console.error("Error resetting monthly sales");
     }
 });
 
