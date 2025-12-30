@@ -93,7 +93,7 @@ const MonthlyReports = () => {
                         <tr>
                             <th>#</th>
                             <th>Date</th>
-                            <th>Sales Amount</th>
+                            <th>Sales</th>
                             <th>Profit</th>
                         </tr>
                     </thead>
