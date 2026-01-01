@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Sale = require("../models/Sale");
 const Product = require("../models/Product");
-const cron = require("node-cron");
 
 router.post("/add", async (req, res) => {
   try {
@@ -42,7 +41,8 @@ router.post("/add", async (req, res) => {
     }
 
     res.status(201).json({
-      message: "Sale recorded successfully" });
+      message: "Sale recorded successfully"
+    });
 
   } catch (error) {
     res.status(500).json({ message: "Error recording sale" });
@@ -50,23 +50,14 @@ router.post("/add", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  try {
-    const sales = await Sale.find().sort({ createdAt: -1 });
-    res.json(sales);
-  } catch (error) {
-    res.status(500).json({ message: "Error fetching sales" });
-  }
+  const now = new Date();
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const sales = await Sale.find({
+    saleDate: { $gte: firstDay }
+  }).sort({ saleDate: -1 });
+
+  res.json(sales);
 });
-
-cron.schedule("0 0 1 * *", async () => { 
-  try {
-    await Sale.deleteMany({});
-
-    console.log("Monthly reset: sale records deleted");
-  } catch (error) {
-    console.error("Error during monthly reset");
-  }
-});
-
 
 module.exports = router;

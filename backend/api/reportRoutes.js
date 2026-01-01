@@ -4,29 +4,23 @@ const Sale = require("../models/Sale");
 const cron = require("node-cron");
 
 router.get("/daily", async (req, res) => {
-    try {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-        const report = await Sale.aggregate([
-            { $match: { saleDate: { $gte: today } } },
-            {
-                $group: {
-                    _id: null,
-                    totalSalesAmount: {
-                        $sum: {
-                            $multiply: ["$sellingPrice", "$quantitySold"]
-                        }
-                    },
-                    totalProfit: { $sum: "$profit" }
-                }
+    const report = await Sale.aggregate([
+        { $match: { saleDate: { $gte: today } } },
+        {
+            $group: {
+                _id: null,
+                totalSalesAmount: {
+                    $sum: { $multiply: ["$sellingPrice", "$quantitySold"] }
+                },
+                totalProfit: { $sum: "$profit" }
             }
-        ]);
+        }
+    ]);
 
-        res.json(report[0] || { totalSalesAmount: 0, totalProfit: 0 });
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching daily report" });
-    }
+    res.json(report[0] || { totalSalesAmount: 0, totalProfit: 0 });
 });
 
 router.get("/monthly", async (req, res) => {
@@ -38,13 +32,9 @@ router.get("/monthly", async (req, res) => {
             { $match: { saleDate: { $gte: firstDay } } },
             {
                 $group: {
-                    _id: {
-                        $dateToString: { format: "%Y-%m-%d", date: "$saleDate" }
-                    },
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$saleDate" } },
                     dailySalesAmount: {
-                        $sum: {
-                            $multiply: ["$sellingPrice", "$quantitySold"]
-                        }
+                        $sum: { $multiply: ["$sellingPrice", "$quantitySold"] }
                     },
                     dailyProfit: { $sum: "$profit" }
                 }
@@ -57,32 +47,47 @@ router.get("/monthly", async (req, res) => {
             {
                 $group: {
                     _id: null,
-                    totalSalesAmount: {
-                        $sum: {
-                            $multiply: ["$sellingPrice", "$quantitySold"]
-                        }
-                    },
+                    totalSalesAmount: { $sum: { $multiply: ["$sellingPrice", "$quantitySold"] } },
                     totalProfit: { $sum: "$profit" }
                 }
             }
         ]);
 
         res.json({
-            daily: dailyReport,
+            daily: dailyReport || [],
             total: totalReport[0] || { totalSalesAmount: 0, totalProfit: 0 }
         });
-    } catch (error) {
+    } catch (err) {
+        console.error(err);
         res.status(500).json({ message: "Error fetching monthly report" });
     }
 });
 
-cron.schedule("0 0 1 * *", async () => {
-    try {
-        await Sale.deleteMany({});
-        console.log("Monthly sales reset automatically");
-    } catch (error) {
-        console.error("Error resetting monthly sales");
+cron.schedule(
+    "0 0 1 * *",
+    async () => {
+        try {
+            const now = new Date();
+            const firstDayOfCurrentMonth = new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                1
+            );
+
+            const result = await Sale.deleteMany({
+                saleDate: { $lt: firstDayOfCurrentMonth }
+            });
+
+            console.log(
+                `Monthly cleanup done. Deleted ${result.deletedCount} records`
+            );
+        } catch (error) {
+            console.error("Monthly cleanup error", error);
+        }
+    },
+    {
+        timezone: "Asia/Karachi"
     }
-});
+);
 
 module.exports = router;
